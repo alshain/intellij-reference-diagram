@@ -47,12 +47,17 @@ import org.jetbrains.annotations.Nullable;
 public class ReferenceDiagramDataModel extends DiagramDataModel<ReferenceElement> {
     private List<ReferenceNode> myNodes = new ArrayList<>();
     private List<ReferenceEdge> myEdges = new ArrayList<>();
+    private final ReferenceElement classElement;
 
     public ReferenceDiagramDataModel(Project project, ReferenceElement classElement) {
         super(project, ReferenceDiagramProvider.getInstance());
+        this.classElement = classElement;
 
         prepareReferenceElements(classElement);
+    }
 
+    @Override
+    public void refreshDataModel() {
         DiagramRelationshipInfo r;
 
         for (final ReferenceElement callerMethod : classElement.getMembers()) {
@@ -64,6 +69,7 @@ public class ReferenceDiagramDataModel extends DiagramDataModel<ReferenceElement
             }
         }
     }
+
 
     public void prepareReferenceElements(ReferenceElement classElement) {
         PsiClass psiClass = (PsiClass) classElement.getPsiElement();
@@ -172,10 +178,6 @@ public class ReferenceDiagramDataModel extends DiagramDataModel<ReferenceElement
     @Override
     public void removeNode(DiagramNode<ReferenceElement> node) {
         System.out.println("removeNode");
-    }
-
-    @Override
-    public void refreshDataModel() {
     }
 
     @NotNull
